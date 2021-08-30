@@ -1,0 +1,15 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.192.0/containers/ubuntu
+{
+	// Substitute whatever image you want here, or specify `build : { dockerfile: 'Dockerfile' }` to use your own.
+	"image": "mcr.microsoft.com/vscode/devcontainers/dotnet:5.0",
+
+	// Run this script when we're done creating the codespace, which sets up enclave.
+	"postCreateCommand": "./.devcontainer/install-enclave.sh",
+
+	// An enclave service is added to the codespace container as /etc/init.d/enclave, because we don't use systemd, so systemctl doesn't work here.
+	"postStartCommand": "service enclave start",
+
+	// Enclave needs the ability to create virtual network adapters, which is what we're doing here.
+	"runArgs": [ "--cap-add=NET_ADMIN", "--device=/dev/net/tun" ]
+}
